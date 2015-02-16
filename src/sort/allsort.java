@@ -64,6 +64,31 @@ public class allsort {
 		return unsortedA;
 	}
 	
+	/*
+	 * Every iteration compares the ith element
+	 * against all elements whose index is smaller
+	 * than i. If mth element is bigger than ith element,
+	 * then insert ith element at m, and shift all elments
+	 * from m to 1 to the right by 1 
+	 */
+	static int[] insertion_sort(int[] unsortedA) throws Exception{
+		if(unsortedA == null){
+			throw new Exception(ARRAY_NULL_EXP_STR);
+		}
+		
+		for(int i = 1; i < unsortedA.length; i++){
+			int key = unsortedA[i];
+			int j = i - 1;
+			while(j >= 0 && key < unsortedA[j]){
+				unsortedA[j+1] = unsortedA[j];
+				j--;
+			}
+			unsortedA[j+1] = key;
+		}
+		
+		return unsortedA;
+	}
+	
 	static void print_array(int[] arr) throws Exception{
 		if(arr == null){
 			throw new Exception(ARRAY_NULL_EXP_STR);
@@ -84,7 +109,7 @@ public class allsort {
 		int[] sortedArray;
 		
 		//call bubble sort
-		try {
+		/*try {
 			sortedArray = bubble_sort(unsortedArray);
 			print_array(sortedArray);
 		} catch (Exception e) {
@@ -95,6 +120,16 @@ public class allsort {
 		
 		try {
 			sortedArray = selection_sort(unsortedArray);
+			print_array(sortedArray);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+		
+		//call insertion sort
+		
+		try {
+			sortedArray = insertion_sort(unsortedArray);
 			print_array(sortedArray);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
