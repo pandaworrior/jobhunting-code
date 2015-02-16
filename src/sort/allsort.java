@@ -89,6 +89,57 @@ public class allsort {
 		return unsortedA;
 	}
 	
+	
+	/*
+	 * The merge sort uses divide and conquer idea
+	 * split the array into n arrays, each of which contains single element
+	 * recursively merge sublist
+	 */
+	static int[] merge_sort(int[] unsortedA) throws Exception{
+		if(unsortedA == null){
+			throw new Exception(ARRAY_NULL_EXP_STR);
+		}
+		
+		int[] sortedA = new int[unsortedA.length];
+		merge_split_merge(unsortedA, 0, unsortedA.length, sortedA);
+		return sortedA;
+		
+	}
+	
+	static void merge_split_merge(int[] unsortedA, int left, int right, int[] sortedA){
+		if(right - left < 2){
+			return;//either one element left or two elements left
+		}
+		
+		int middle = (right + left)/2;
+		merge_split_merge(unsortedA, left, middle, sortedA);
+		merge_split_merge(unsortedA, middle, right, sortedA);
+		merge(unsortedA, left, middle, right,sortedA);
+	}
+	
+	static void merge(int[] unsortedA, int left, int middle, int right, int[] sortedA){
+		
+		int start_left_array = left;
+		int start_right_array = middle;
+		
+		for(int i = left; i < right; i++){//iterate the sorted array for copying data
+			if(start_left_array < middle && 
+					(start_right_array >= right || 
+							unsortedA[start_left_array] < unsortedA[start_right_array])){
+				//this condition is true only when the left array is not empty
+				//and the right array is empty or the element that is being scanned at
+				// the left array is smaller than the element that is being scanned at 
+				// the right array
+				sortedA[i] = unsortedA[start_left_array];
+				start_left_array++;
+			}else{
+				sortedA[i] = unsortedA[start_right_array];
+				start_right_array++;
+			}
+		}
+		
+	}
+	
 	static void print_array(int[] arr) throws Exception{
 		if(arr == null){
 			throw new Exception(ARRAY_NULL_EXP_STR);
@@ -130,6 +181,16 @@ public class allsort {
 		
 		try {
 			sortedArray = insertion_sort(unsortedArray);
+			print_array(sortedArray);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//call merge sort
+		
+		try {
+			sortedArray = merge_sort(unsortedArray);
 			print_array(sortedArray);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
