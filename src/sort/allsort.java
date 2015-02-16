@@ -117,6 +117,7 @@ public class allsort {
 		merge(unsortedA, left, middle, right,sortedA);
 	}
 	
+	// pay more attention to the border index
 	static void merge(int[] unsortedA, int left, int middle, int right, int[] sortedA){
 		
 		int start_left_array = left;
@@ -138,6 +139,65 @@ public class allsort {
 			}
 		}
 		
+	}
+	
+	/*
+	 * The quick sort also takes advantage of divide and conquer idea.
+	 * Every iteration, it chooses a pivot, and sorts the array by
+	 * placing all elements smaller than pivot at the head, and 
+	 * all elements greater than pivot at the tail.
+	 * TODO: take a look at it more than one times
+	 */
+	static int[] quick_sort(int[] unsortedA) throws Exception{
+		if(unsortedA == null){
+			throw new Exception(ARRAY_NULL_EXP_STR);
+		}
+		
+		quick_sort_recur(unsortedA, 0, unsortedA.length - 1);
+		
+		return unsortedA;
+	}
+	
+	// the recursion of quick sort
+	static void quick_sort_recur(int[] unsortedA, int left, int right){
+		if(left >= right){
+			return;
+		}
+		
+		int pivot_index = partition(unsortedA, left, right);
+		quick_sort_recur(unsortedA, left, pivot_index - 1);
+		quick_sort_recur(unsortedA, pivot_index+1, right);
+	}
+	
+	//find a pivot, and make the array to be A p B where
+	//A contains all elements smaller than p, and
+	//B contains all elements equal to or greater than p
+	static int partition(int[] unsortedA, int left, int right){
+		int pivot_index = left;
+		int pivot_value = unsortedA[pivot_index];
+		
+		//put the pivot to the end of the array
+		unsortedA[pivot_index] = unsortedA[right];
+		unsortedA[right] = pivot_value;
+		
+		int sorted_index = left;
+		for(int i = left; i < right; i++){//pay more attention to the border index right,
+			if(unsortedA[i] < pivot_value){
+				//place the smaller element at the head,
+				//sorted_index pointers to the next unsorted place of the head
+				int temp = unsortedA[i];
+				unsortedA[i] = unsortedA[sorted_index];
+				unsortedA[sorted_index] = temp;
+				sorted_index++;
+			}
+		}
+		
+		//place the pivot to the right place so that
+		//its left are all elements smaller than it
+		//its right are all elements equal to or greater than it
+		unsortedA[right] = unsortedA[sorted_index];//made a mistake here, since the pivot_index is no longer pointing to pivot
+		unsortedA[sorted_index] = pivot_value;
+		return sorted_index;
 	}
 	
 	static void print_array(int[] arr) throws Exception{
@@ -191,6 +251,16 @@ public class allsort {
 		
 		try {
 			sortedArray = merge_sort(unsortedArray);
+			print_array(sortedArray);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//call quick sort
+		
+		try {
+			sortedArray = quick_sort(unsortedArray);
 			print_array(sortedArray);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
