@@ -200,6 +200,68 @@ public class allsort {
 		return sorted_index;
 	}
 	
+	/*
+	 * Heapsort implements binary tree idea, where for ith element in an array,
+	 * its left child is at 2*i+1 and its right child is at 2*i+2. Every iteration
+	 * replace the parent with the max of its left and right child. This computation
+	 * runs backward and the root will become the max of the whole array when the computation
+	 * ends. Then swap the first element of the array with the last element of the array.
+	 * The next iteration starts with a smaller array where it excludes the sorted part at the 
+	 * end of the array produced by the previous iteration
+	 */
+	
+	static int[] heap_sort(int[] unsortedA) throws Exception{
+		if(unsortedA == null){
+			throw new Exception(ARRAY_NULL_EXP_STR);
+		}
+		
+		int arr_length = unsortedA.length;
+		while(arr_length > 0){
+			heapify(unsortedA, arr_length);
+			int temp = unsortedA[0];
+			unsortedA[0] = unsortedA[arr_length - 1];
+			unsortedA[arr_length - 1] = temp;
+			arr_length--;
+		}
+		
+		return unsortedA;//TODO: I forgot this statement
+	}
+	
+	static void heapify(int[] arr, int arr_length){
+		//compute the last parent
+		int last_element_index = arr_length - 1;
+		int last_parent_index = -1;
+		if(last_element_index % 2 == 0){
+			last_parent_index = (last_element_index - 2)/2;
+		}else{
+			last_parent_index = (last_element_index - 1)/2;
+		}
+		
+		while(last_parent_index >= 0){
+			maximize_parent(arr, last_parent_index, arr_length);
+			last_parent_index = last_parent_index - 1;
+		}
+	}
+	
+	static void maximize_parent(int[] arr, int parent_index, int arr_length){//TODO: pay more attention to the border
+		int left_child_index = 2 * parent_index + 1;
+		int right_child_index = 2 * parent_index + 2;
+		if(left_child_index < arr_length){
+			if(arr[left_child_index] > arr[parent_index]){
+				int temp = arr[left_child_index];
+				arr[left_child_index] = arr[parent_index];
+				arr[parent_index] = temp;
+			}
+			if(right_child_index < arr_length){
+				if(arr[right_child_index] > arr[parent_index]){
+					int temp = arr[right_child_index];
+					arr[right_child_index] = arr[parent_index];
+					arr[parent_index] = temp;
+				}
+			}
+		}
+	}
+	
 	static void print_array(int[] arr) throws Exception{
 		if(arr == null){
 			throw new Exception(ARRAY_NULL_EXP_STR);
@@ -239,7 +301,7 @@ public class allsort {
 		
 		//call insertion sort
 		
-		try {
+		/*try {
 			sortedArray = insertion_sort(unsortedArray);
 			print_array(sortedArray);
 		} catch (Exception e) {
@@ -261,6 +323,16 @@ public class allsort {
 		
 		try {
 			sortedArray = quick_sort(unsortedArray);
+			print_array(sortedArray);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+		
+		//call heap sort
+		
+		try {
+			sortedArray = heap_sort(unsortedArray);
 			print_array(sortedArray);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
